@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html ng-app="userSetting">
+    <head>
+        <title>User Settings</title>
+
+        <meta name="description" content="DHIS 2">
+        <meta name="keywords" content="DHIS 2">        
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <script type="text/javascript">
+            window.dhis2 = window.dhis2 || {};
+            dhis2.settings = dhis2.settings || {};
+            dhis2.settings.baseUrl = 'demo';
+        </script>
+        <style>
+            #showLeftBar {
+                top: 120px !important;
+            }
+        </style>
+
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/jQuery/jquery.min.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/jQuery/jquery.plugin.min.js"></script>
+
+        <script type="text/javascript" src="../../../dhis-web-commons/bootstrap/js/bootstrap.min.js"></script>
+        <link type="text/css" rel="stylesheet"  href="../../../dhis-web-commons/bootstrap/css/bootstrap.min.css">
+
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/angular.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/angular-resource.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/angular-route.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/angular-cookies.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/angular-sanitize.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/angular-animate.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/ui-bootstrap.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.util.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/commons.js"></script>
+
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/plugins/angularLocalStorage.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/angular/plugins/angular-translate.min.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.angular.directives.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.angular.map.directive.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.angular.services.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.angular.validations.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.angular.filters.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.angular.controllers.js"></script>
+
+        <script type="text/javascript" src="scripts/app.js"></script>        
+        <script type="text/javascript" src="scripts/services.js"></script>
+        <script type="text/javascript" src="scripts/directives.js"></script>
+        <script type="text/javascript" src="scripts/controllers.js"></script>
+        <script type="text/javascript" src="scripts/filters.js"></script>
+        <script type="text/javascript" src="scripts/Toaster/toaster.min.js"></script>
+        <script type="text/javascript" src="scripts/leftbar-menu-controller.js"></script>
+        <script type="text/javascript" src="scripts/main.js"></script>
+
+         <!-- Menu scripts -->
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.translate.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.menu.js"></script>
+        <script type="text/javascript" src="../../../dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js"></script>
+
+        <link type="text/css" rel="stylesheet" href="../../../dhis-web-commons/font-awesome/css/font-awesome.min.css"/>
+        <link type="text/css" rel="stylesheet" media="screen" href="../../../dhis-web-commons/css/widgets.css"/>
+        <link type="text/css" rel="stylesheet" media="screen" href="../../../dhis-web-commons/css/menu.css">
+
+        <link type="text/css" rel="stylesheet" href="styles/style.css">
+        <link type="text/css" rel="stylesheet" href="scripts/Toaster/toaster.css">
+
+    </head>
+
+    <body>
+    <d2-header-bar></d2-header-bar>
+
+    <span id="showLeftBar" class="hideInPrint">
+        <a href="javascript:dhis2.leftBar.showAnimated()" title="$i18n.getString('show_menu' )"><i class="fa fa-arrow-right leftBarIcon"></i></a>
+        </span>
+
+    <div id="leftBar">
+
+        <d2-left-bar></d2-left-bar>
+    </div>
+    <div class="page" id="mainPage" ng-controller="MainController" style="padding-top: 20px;">
+
+        <div class="row top-bar">
+            <div class="col-sm-12">
+                {{'settings'| translate}}
+                <span><a style="cursor: pointer" ng-click="getHelpContent('userGeneralSettings')" title="Help"><i class="fa fa-question-circle"></i></a></span>
+            </div>
+        </div>
+    <div class="row">
+        <div class="col-md-8">
+            <form name="messageForm">
+                <div class="form-group">
+                    <label for="interfacelanguage">{{'interface_language'| translate}}</label>
+                    <select class="form-control" name="intfName" id="interfacelanguage" ng-model="userObject.keyUiLocale" ng-change="saveIntLanguage()">
+                        <option ng-repeat="lagDb in userLang" value="{{lagDb.value}}" ng-selected="lagDb.selected==true">{{lagDb.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="databaselanguage">{{'database_language'| translate}}</label>
+                    <select class="form-control" name="dbLocale" id="databaselanguage" ng-model="userObject.keyDbLocale" ng-change="saveDbLocale()">
+                        <option value="">[Use database locale / no translation]</option>
+                        <option ng-repeat="db in userDb" value="{{db.value}}" ng-selected="db.selected==true">{{db.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="startPage">{{'start_page'| translate}}</label>
+                    <select class="form-control" name="startPage" id="startPage" ng-model="userObject.value" ng-change="saveStartPage()">
+                        <option ng-repeat="start in startModule" value="{{start.value}}" ng-selected="start.selected==true">{{start.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="interfacestyle">{{'interface_style'| translate}}</label>
+                    <select class="form-control" name="styles" id="interfacestyle" ng-model="userObject.keyStyle" ng-change="saveIntStyle()">
+                        <option ng-repeat="style in styleInterface" value="{{style.path}}" ng-selected="style.selected==true">{{style.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="systemmodules">{{'interface_module'| translate}}</label>
+                    <select class="form-control" name="displayProperty" id="systemmodules" ng-model="userObject.keyAnalysisDisplayProperty" ng-change="saveAnalysisObject()">
+                        <option value="name" ng-selected="displayModule==name">Name</option>
+                        <option value="shortName" ng-selected="displayModule==shortName">Short name</option>
+                    </select>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="userObject.keyMessageEmailNotification" ng-checked="userObject.userEmailNotification==true" ng-checked="userObject.userEmailNotification==false" ng-change="saveEmailNotif()"> {{'system_notification'| translate}}
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="userObject.keyMessageSmsNotification" ng-checked="userObject.userMessageNotification==true" ng-checked="userObject.userMessageNotification==false" ng-change="saveMessageNotif()"> {{'system_message'| translate}}
+                    </label>
+                </div>
+                <!--<button type="submit" class="btn btn-default" ng-click="sendUserSetting(userObject.keyUiLocale,userObject.keyDbLocale,startModule.namespace,userObject.keyStyle,userObject.keyAnalysisDisplayProperty,userObject.keyMessageEmailNotification,userObject.keyMessageSmsNotification)">Submit</button>-->
+            </form>
+
+        </div>
+        <div id="rightBar">
+            <div id="rightBarContents">
+                <span id="hideRightBar"><a style="cursor: pointer" ng-click="hideHelpContent()" title="Close">
+                    <i class="fa fa-times leftBarIcon"></i></a></span>
+                <div ng-bind-html="trustedHtml"></div>
+            </div>
+        </div>
+    </div>
+
+   </div>
+
+</body>
+</html>

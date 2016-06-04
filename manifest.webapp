@@ -1,0 +1,23 @@
+{
+    "version": "1.0",
+    "name": "User Setting",
+    "displayName": "User Setting App",
+    "description": "User Setting App",
+    "appType": "APP",
+    "launch_path": "index.html",
+    "icons": {
+        "16": "/img/ind.png",
+        "48": "/img/ind.png",
+        "128": "/img/ind.png"
+    },
+    "developer": {
+        "name": "HISP Tanzania",
+        "url":  "https://tz.linkedin.com/in/tuzo-chubwa-93432688"
+    },
+    "default_locale": "en",
+    "activities": {
+        "dhis": {
+            "href": "../../.."
+        }
+    }
+}
