@@ -6,7 +6,7 @@
 var userSettingControllers = angular.module('userSettingControllers', [])
 
 //Controller for settings page
-.controller('MainController', function($scope,$http, storage, $timeout,$window, userSetting, ModalService,toaster,$sce) {
+.controller('MainController', function($scope,$http, storage, $timeout,$window, userSetting, ModalService,toaster,$sce,$q) {
 
         $http.get('../../../api/userSettings').success(function(userObject){
             $scope.userObject=userObject;
@@ -16,9 +16,15 @@ var userSettingControllers = angular.module('userSettingControllers', [])
             $scope.userEmailNotification=userObject.keyMessageEmailNotification;
             $scope.userMessageNotification=userObject.keyMessageSmsNotification;
             $scope.styleInterface=userSetting.getUserInterfaceStyle(userObject);
-            $scope.startModule=userSetting.getUserStartPage(userObject);
          },function(error){
             console.log("Error" +error);
+        });
+        var promise={module:userSetting.getSystemModule(),
+            systemObject:userSetting.getSystemSetting(),
+            systemApp:userSetting.getSystemApps()
+        }
+        $q.all(promise).then(function(data){
+            $scope.startModule=userSetting.getUserStartPage(data.systemObject,data.module,data.systemApp);
         });
         $scope.addUserStartModulePropert=function(userObject){
             if(userObject.hasOwnProperty('startModule')){

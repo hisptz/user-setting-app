@@ -12,31 +12,31 @@ userSettingServices.service('userSetting', function ($window, $q,$http,$rootScop
 
         getInterfaceLanguage:function(userSettingObject){
             var laguange=[
-                {'name':'Arabic','value':'ar','selected':false},
-                {'name':'Arabic (Egypt)','value':'ar_EG','selected':false},
-                {'name':'Arabic (Iraq)','value':'ar_IQ','selected':false},
-                {'name':'Arabic (Sudan)','value':'ar_SD','selected':false},
-                {'name':'Bengali','value':'bn','selected':false},
-                {'name':'Bislama','value':'bi','selected':false},
-                {'name':'Burmese','value':'my','selected':false},
-                {'name':'Chinese','value':'zh','selected':false},
-                {'name':'Dzongkha','value':'dz','selected':false},
-                {'name':'English','value':'en','selected':false},
-                {'name':'French','value':'fr','selected':false},
-                {'name':'Indonesian (Indonesia)','value':'in_ID','selected':false},
-                {'name':'Khmer','value':'km','selected':false},
-                {'name':'Kinyarwanda','value':'rw','selected':false},
-                {'name':'Lao','value':'lo','selected':false},
-                {'name':'Mongolian','value':'mn','selected':false},
-                {'name':'Nepali','value':'ne','selected':false},
-                {'name':'Portuguese','value':'pt','selected':false},
-                {'name':'Portuguese (Brazil)','value':'pt_BR','selected':false},
-                {'name':'Russian','value':'ru','selected':false},
-                {'name':'Tajik','value':'tg','selected':false},
-                {'name':'Tetum','value':'tet','selected':false},
-                {'name':'Urdu','value':'ur','selected':false},
-                {'name':'Vietnamese','value':'vi','selected':false},
-                {'name':'ckb','value':'ckb','selected':false}
+                //{'name':'Arabic','value':'ar','selected':false},
+                //{'name':'Arabic (Egypt)','value':'ar_EG','selected':false},
+                //{'name':'Arabic (Iraq)','value':'ar_IQ','selected':false},
+                //{'name':'Arabic (Sudan)','value':'ar_SD','selected':false},
+                //{'name':'Bengali','value':'bn','selected':false},
+                //{'name':'Bislama','value':'bi','selected':false},
+                //{'name':'Burmese','value':'my','selected':false},
+                //{'name':'Chinese','value':'zh','selected':false},
+                //{'name':'Dzongkha','value':'dz','selected':false},
+                {'name':'English','value':'en','selected':false}
+                //{'name':'French','value':'fr','selected':false},
+                //{'name':'Indonesian (Indonesia)','value':'in_ID','selected':false},
+                //{'name':'Khmer','value':'km','selected':false},
+                //{'name':'Kinyarwanda','value':'rw','selected':false},
+                //{'name':'Lao','value':'lo','selected':false},
+                //{'name':'Mongolian','value':'mn','selected':false},
+                //{'name':'Nepali','value':'ne','selected':false},
+                //{'name':'Portuguese','value':'pt','selected':false},
+                //{'name':'Portuguese (Brazil)','value':'pt_BR','selected':false},
+                //{'name':'Russian','value':'ru','selected':false},
+                //{'name':'Tajik','value':'tg','selected':false},
+                //{'name':'Tetum','value':'tet','selected':false},
+                //{'name':'Urdu','value':'ur','selected':false},
+                //{'name':'Vietnamese','value':'vi','selected':false},
+                //{'name':'ckb','value':'ckb','selected':false}
             ];
             angular.forEach(laguange,function(langDb){
                 if(langDb.value==userSettingObject.keyUiLocale){
@@ -85,31 +85,79 @@ userSettingServices.service('userSetting', function ($window, $q,$http,$rootScop
             return dbLanguage;
 
         },
-        getUserStartPage:function(object){
-            var assignedModules=[];
+        getSystemModule:function(){
+            var def = $q.defer();
+            var startModules = [];
+            var promise=$http.get(  '../../../dhis-web-commons/menu/getModules.action' )
+                .then(function(response){
+                    var pageObject={}
+                    var ObjectPage=
+                        angular.forEach(response.data.modules,function(valueKey){
+                            if(!valueKey.displayName){
+                                pageObject={"name":valueKey.name,"value":valueKey.namespace}
+                            }else{
+                                pageObject={"name":valueKey.displayName,"value":valueKey.namespace}
+                            }
+                            startModules.push(pageObject)
+                        });
+                    return startModules;
+                }, function(){
+                    return startModules;
+                });
+            return promise;
+        },
+        getSystemSetting:function(){
+            var def = $q.defer();
+            var moduleObject={}
+            var promise=$http.get(  '../../../api/userSettings' )
+                .then(function(response){
+                  moduleObject=response.data;
+                    return moduleObject;
+                }, function(){
+                    return moduleObject;
+                });
+            return promise;
+        },
+        getSystemApps:function(){
             var startApps = [];
             var hardCodedMemu=[];
-            $http.get('../../../api/apps?fields=name,folderName').success(function(returnedArray){
+            var startModulesCombined='';
+            var promise=$http.get('../../../api/apps?fields=name,folderName').then(function(response){
                 hardCodedMemu.push({"name":"Dashboard","value":"/dhis-web-dashboard-integration"},{"name":"Pivot Table","value":"/dhis-web-pivot"},
                     {"name":"Data Visualizer","value":"/dhis-web-visualizer"},{"name":"GIS","value":"/dhis-web-mapping"},{"name":"Data Administration","value":"/dhis-web-maintenance-dataadmin"},
                     {"name":"Entry Forms","value":"/dhis-web-maintenance-dataset"},{"name":"Import-Export","value":"/dhis-web-importexport"},{"name":"Administrative Units","value":"/dhis-web-maintenance-organisationunit"},
                     {"name":"Users","value":"/dhis-web-maintenance-user"},{"name":"Data Elements / Indicators","value":"/dhis-web-maintenance"});
-                angular.forEach(returnedArray,function(valueKey){
+                angular.forEach(response.data,function(valueKey){
                     startApps.push({"name":valueKey.name,"value":valueKey.name});
                 });
-                var startModulesCombined=hardCodedMemu.concat(startApps);
-                angular.forEach(startModulesCombined,function(pages){
-                    if(object.startModule==pages.value){
-                        pages['selected']=true;
-                    }else{
-                        pages['selected']=false;
-                    }
-                    assignedModules.push(pages);
-                })
+                startModulesCombined=hardCodedMemu.concat(startApps);
+                console.log(startModulesCombined);
+                return startModulesCombined;
             },function(error){
-                //Error if fails
-                console.log("Fails "+error)
+                return startModulesCombined;
             });
+            return promise;
+        },
+        getUserStartPage:function(object,moduleObject,systemApp){
+            var assignedModules=[];
+            var systemModule=[];
+            angular.forEach(moduleObject,function(systeModule){
+                angular.forEach(systemApp,function(userfilter){
+                    if(systeModule.name==userfilter.name){
+                        systemModule.push(userfilter);
+                    }
+                })
+            });
+            //console.info(systemModule);
+            angular.forEach(systemModule,function(pages){
+                if(object.startModule==pages.value){
+                    pages['selected']=true;
+                }else{
+                    pages['selected']=false;
+                }
+                assignedModules.push(pages);
+            })
+            console.info(assignedModules);
             return assignedModules;
         },
         getUserInterfaceStyle:function(styleObject){

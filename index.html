@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="userSetting">
     <head>
-        <title>User Settings</title>
+        <title>usersettings</title>
 
         <meta name="description" content="DHIS 2">
         <meta name="keywords" content="DHIS 2">        
@@ -78,7 +78,7 @@
 
         <d2-left-bar></d2-left-bar>
     </div>
-    <div class="page" id="mainPage" ng-controller="MainController" style="padding-top: 20px;">
+    <div class="page" id="mainPage" ng-controller="MainController" style="padding-top:20px;">
 
         <div class="row top-bar">
             <div class="col-sm-12">
@@ -95,25 +95,25 @@
                         <option ng-repeat="lagDb in userLang" value="{{lagDb.value}}" ng-selected="lagDb.selected==true">{{lagDb.name}}</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="databaselanguage">{{'database_language'| translate}}</label>
-                    <select class="form-control" name="dbLocale" id="databaselanguage" ng-model="userObject.keyDbLocale" ng-change="saveDbLocale()">
-                        <option value="">[Use database locale / no translation]</option>
-                        <option ng-repeat="db in userDb" value="{{db.value}}" ng-selected="db.selected==true">{{db.name}}</option>
-                    </select>
-                </div>
+                <!--<div class="form-group">-->
+                    <!--<label for="databaselanguage">{{'database_language'| translate}}</label>-->
+                    <!--<select class="form-control" name="dbLocale" id="databaselanguage" ng-model="userObject.keyDbLocale" ng-change="saveDbLocale()">-->
+                        <!--<option value="">[Use database locale / no translation]</option>-->
+                        <!--<option ng-repeat="db in userDb" value="{{db.value}}" ng-selected="db.selected==true">{{db.name}}</option>-->
+                    <!--</select>-->
+                <!--</div>-->
                 <div class="form-group">
                     <label for="startPage">{{'start_page'| translate}}</label>
                     <select class="form-control" name="startPage" id="startPage" ng-model="userObject.value" ng-change="saveStartPage()">
                         <option ng-repeat="start in startModule" value="{{start.value}}" ng-selected="start.selected==true">{{start.name}}</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="interfacestyle">{{'interface_style'| translate}}</label>
-                    <select class="form-control" name="styles" id="interfacestyle" ng-model="userObject.keyStyle" ng-change="saveIntStyle()">
-                        <option ng-repeat="style in styleInterface" value="{{style.path}}" ng-selected="style.selected==true">{{style.name}}</option>
-                    </select>
-                </div>
+                <!--<div class="form-group">-->
+                    <!--<label for="interfacestyle">{{'interface_style'| translate}}</label>-->
+                    <!--<select class="form-control" name="styles" id="interfacestyle" ng-model="userObject.keyStyle" ng-change="saveIntStyle()">-->
+                        <!--<option ng-repeat="style in styleInterface" value="{{style.path}}" ng-selected="style.selected==true">{{style.name}}</option>-->
+                    <!--</select>-->
+                <!--</div>-->
                 <div class="form-group">
                     <label for="systemmodules">{{'interface_module'| translate}}</label>
                     <select class="form-control" name="displayProperty" id="systemmodules" ng-model="userObject.keyAnalysisDisplayProperty" ng-change="saveAnalysisObject()">
@@ -121,16 +121,16 @@
                         <option value="shortName" ng-selected="displayModule==shortName">Short name</option>
                     </select>
                 </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" ng-model="userObject.keyMessageEmailNotification" ng-checked="userObject.userEmailNotification==true" ng-checked="userObject.userEmailNotification==false" ng-change="saveEmailNotif()"> {{'system_notification'| translate}}
-                    </label>
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" ng-model="userObject.keyMessageSmsNotification" ng-checked="userObject.userMessageNotification==true" ng-checked="userObject.userMessageNotification==false" ng-change="saveMessageNotif()"> {{'system_message'| translate}}
-                    </label>
-                </div>
+                <!--<div class="checkbox">-->
+                    <!--<label>-->
+                        <!--<input type="checkbox" ng-model="userObject.keyMessageEmailNotification" ng-checked="userObject.userEmailNotification==true" ng-checked="userObject.userEmailNotification==false" ng-change="saveEmailNotif()"> {{'system_notification'| translate}}-->
+                    <!--</label>-->
+                <!--</div>-->
+                <!--<div class="checkbox">-->
+                    <!--<label>-->
+                        <!--<input type="checkbox" ng-model="userObject.keyMessageSmsNotification" ng-checked="userObject.userMessageNotification==true" ng-checked="userObject.userMessageNotification==false" ng-change="saveMessageNotif()"> {{'system_message'| translate}}-->
+                    <!--</label>-->
+                <!--</div>-->
                 <!--<button type="submit" class="btn btn-default" ng-click="sendUserSetting(userObject.keyUiLocale,userObject.keyDbLocale,startModule.namespace,userObject.keyStyle,userObject.keyAnalysisDisplayProperty,userObject.keyMessageEmailNotification,userObject.keyMessageSmsNotification)">Submit</button>-->
             </form>
 

@@ -1,8 +1,8 @@
 {
     "version": "1.0",
     "name": "User Setting",
-    "displayName": "User Setting App",
-    "description": "User Setting App",
+    "displayName": "User setting App",
+    "description": "user setting App",
     "appType": "APP",
     "launch_path": "index.html",
     "icons": {
