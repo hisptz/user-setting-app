@@ -1,1 +1,1 @@
-# userSettingApp
+# user-setting-app
